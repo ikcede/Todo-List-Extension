@@ -1,0 +1,174 @@
+
+body {
+	text-align: left;
+	min-width: 340px;
+	font-family:Helvetica;
+	padding-bottom:35px;
+}
+
+.divide {
+	border-top:1px solid lightgrey;
+	margin:5px 0 5px 0;
+}
+
+#control {
+	position: fixed;
+	width:100%;
+	height:35px;
+	bottom:0px;
+	left:0px;
+}
+
+#cmd {
+	width: 97%;
+	height: 85%;
+	background: rgb(255, 246, 228);
+	padding-left: 5px;
+	border-radius: 5px;
+	border: 1px solid lightgrey;
+	font-size:18px;
+	font-family: Inconsolata, OpenSans, monospace;
+}
+
+#main, #itemview {
+	padding:10px;
+	margin-bottom:10px;
+	border-radius:5px;
+	border: 1px solid silver;
+	max-height:450px;
+	overflow-y:auto;
+	overflow-x:hidden;
+	
+	position:relative;
+}
+
+#itemview {
+	border:none;
+
+	position:absolute;
+	height:5px;
+	width:94%;
+	background:white;
+	left:350px;
+	top:0;
+}
+
+/*
+ * List item styling
+ */
+.list-item {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 1px solid grey;
+	border-radius: 5px;
+	margin-bottom: 3px;
+	
+	height:25px;
+	position:relative;
+	
+	cursor:default;
+}
+
+.list-item .item-text {
+	display:inline-block;
+	font-size:16px;
+	margin-top:5px;
+	
+	float:left;
+}
+
+.list-item .item-text input {
+	margin-top:0px;
+}
+
+.check-container {
+	display:inline-block;
+	position:relative;
+	height:25px;
+	width:25px;
+	
+	float:left;
+}
+
+.check {
+	margin:auto;
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	cursor:pointer;
+}
+
+.days {
+	right: 0;
+	border-left: 1px solid grey;
+	height: 20px;
+	top: 0;
+	padding: 5px;
+	padding-top:10px;
+	position: absolute;
+	
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	
+	font-weight:bold;
+	min-width:30px;
+	text-align:center;
+}
+
+.list-item .red {
+	background: rgb(255, 207, 207);
+}
+
+.list-item .green {
+	background:rgb(179, 255, 179);
+}
+
+.list-item .orange {
+	background:rgb(255, 222, 161);
+}
+
+/*
+ * Date picker ui
+ */
+ 
+.ui-datepicker {
+	padding:10px;
+	background:aliceblue;
+	border-radius:10px;
+	text-align:center;
+	
+	display:none;
+}
+
+.ui-datepicker-prev {
+	float:left;
+	cursor:pointer;
+}
+
+.ui-datepicker-next {
+	float:right;
+	cursor:pointer;
+}
+
+.ui-datepicker-title {
+	clear:both;
+}
+
+.ui-datepicker-calendar td {
+	border: 1px solid lightgrey;
+	min-width:21px;
+}
+
+.ui-datepicker-calendar td a {
+	text-decoration:none;
+}
+
+.ui-datepicker-calendar .ui-datepicker-today {
+	background: rgb(255, 194, 0);
+}
+
+.ui-datepicker-calendar .ui-datepicker-current-day {
+	background: rgb(185, 255, 179);
+}
