@@ -197,8 +197,8 @@ var List = function(target, settings) {
 	
 		// Renders the list into the target in settings
 		render: function() {
-			this.sort(this.settings.sort);
 			this.calcDays();
+			this.sort(this.settings.sort);
 		
 			var s = "";
 			var checked = false;
@@ -228,11 +228,14 @@ var List = function(target, settings) {
 						color = "orange";
 					}
 					
+					// Leave red for overdue
 					if(days < 0) {
 						days = "";
+					} else {
+						days += "d";
 					}
 					
-					s += "<div class='days "+color+"'>"+days+"d</div>";
+					s += "<div class='days "+color+"'>"+days+"</div>";
 					
 				} else {
 					s += "<div class='days green'></div>"
@@ -263,20 +266,21 @@ var ItemView = function(selector, item) {
 		show: function() {
 			this.render();
 			
-			$("#main").css({"overflow-y":"hidden"});
-			el.css({"height":"100%"});
+			$("#list").css({"overflow-y":"hidden", "max-height":"350px"});
+			el.css({"height":"350px"});
 			el.animate({left:0});
 		},
-		hide: function() {
+		hide: function(scroll) {
 		
 			// Get all changed values
 			item.deadline = $(el.children("#datepicker")[0]).val();
 		
 			theList.save().render();
 			
-			$("#main").css({"overflow-y":"auto"});
-			el.css({"height":"5px"});
-			el.animate({left:350});
+			el.animate({left:350}, function() {$(this).css({"height":"5px"});});
+			$("#list").css({"overflow-y":"auto", "max-height":"none"});
+			$("#main").scrollTop(scroll);
+			console.log(scroll);
 		}, 
 		
 		// Draws all elements
@@ -291,9 +295,11 @@ var ItemView = function(selector, item) {
 			
 			el.html(s);
 			
+			var scroll = $("#main").scrollTop(); // Save old scroll position
+			
 			setTimeout(function() {
 				$("#datepicker").datepicker();
-				$("#close-itemview").click(function() {ItemView("#itemview", item).hide();});
+				$("#close-itemview").click(function() {ItemView("#itemview", item).hide(scroll);});
 				
 				if(item.deadline) $("#datepicker").val(item.deadline); 
 			},500);

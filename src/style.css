@@ -45,6 +45,7 @@ body {
 #itemview {
 	border:none;
 
+	margin-bottom: 0px;
 	position:absolute;
 	height:5px;
 	width:94%;
