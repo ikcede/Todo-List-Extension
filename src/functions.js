@@ -266,14 +266,18 @@ var ItemView = function(selector, item) {
 		show: function() {
 			this.render();
 			
-			$("#list").css({"overflow-y":"hidden", "max-height":"350px"});
-			el.css({"height":"350px"});
+			$("#list").css({"overflow-y":"hidden", "max-height":"385px"});
+			el.css({"height":"385px"});
 			el.animate({left:0});
 		},
 		hide: function(scroll) {
 		
 			// Get all changed values
 			item.deadline = $(el.children("#datepicker")[0]).val();
+			if(item.deadline == "") {item.daysLeft = -1;}
+			item.details = $(el.children(".item-notes")[0]).val();
+			var itemVal = $(el.children(".item-value")[0]).val();
+			if(itemVal != "") item.value = itemVal;
 		
 			theList.save().render();
 			
@@ -286,12 +290,12 @@ var ItemView = function(selector, item) {
 		// Draws all elements
 		render: function() {
 		
-			var s = "<div class='item-detail-title' style='font-weight:bold;margin-bottom:5px;'>Details:</div>";
-			s += "Deadline: <input type='text' id='datepicker'><br>";
+			var s = "<div class='item-detail-title'>Item Details</div><hr>";
 			
-			s += "Value: " + item.value + "<br>";
-			
-			s += "<br><br><button id='close-itemview'>Back</button>";
+			s += "Value: <br><input type='text' class='item-value' placeholder='Enter value...'></input>";
+			s += "<br><br>Deadline: <input type='text' id='datepicker'><br><br>";
+			s += "Notes:<br><textarea class='item-notes'></textarea>";
+			s += "<br><br><button id='close-itemview'>Save and Return</button>";
 			
 			el.html(s);
 			
@@ -302,7 +306,9 @@ var ItemView = function(selector, item) {
 				$("#close-itemview").click(function() {ItemView("#itemview", item).hide(scroll);});
 				
 				if(item.deadline) $("#datepicker").val(item.deadline); 
-			},500);
+				if(item.value || item.value === "false") $("#itemview .item-value").val(item.value);
+				if(item.details || item.details === "false") $("#itemview .item-notes").val(item.details);
+			},300);
 			
 		}
 	};

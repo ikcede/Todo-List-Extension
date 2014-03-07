@@ -131,6 +131,57 @@ body {
 }
 
 /*
+ * Details UI
+ */
+
+.item-detail-title {
+	font-weight:bold;
+	margin-bottom:5px;
+	text-align:center;
+	letter-spacing:1px;
+}
+
+#itemview input {
+	border-radius: 5px;
+	border: 1px solid darkgrey;
+	padding: 5px;
+}
+
+#itemview .item-value {
+	width:96%;
+}
+
+#itemview .item-notes {
+	width:96%;
+	resize:none;
+	height:150px;
+	overflow-y:auto;
+	border-radius:5px;
+	background:lightyellow;
+	padding:5px;
+	font-size:.9em;
+	font-family:Helvetica;
+}
+
+/*
+ * General UI
+ */
+ 
+hr {
+	border:1px solid lightgrey;
+	border-bottom:none;
+}
+
+button {
+	font-family: Arial, Helvetica, sans-serif;
+	background: whitesmoke;
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 5px 10px;
+	font-size: .9em;
+}
+
+/*
  * Date picker ui
  */
  
