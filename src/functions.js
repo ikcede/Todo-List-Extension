@@ -400,13 +400,6 @@ $(document).on("dblclick", ".item-text", function(e) {
 	return false;
 });
 
-// More responsive editing, but can evolve to highlight items later
-// Reverts control back to cmdline
-// $(document).on("click", ".list-item", function() {
-// 	$(document.activeElement).blur(); 
-// 	setTimeout(function() {$("#control #cmd").focus();}, 50);
-// });
-
 // Opens up an item's details
 $(document).on("dblclick", ".list-item .days", function() {
 	ItemView("#itemview", theList.items[$(this).parent().attr("data-index")]).show();
@@ -421,7 +414,7 @@ $(document).ready(function() {
 	theList = List($("#list")[0]);
 	theList.load().render();
 	
-	setTimeout(function() {$("#control #cmd").focus();}, 50);
+	setTimeout(function() {$("#control #cmd").focus();}, 100);
 	
 	$("#list").sortable({
 		delay: 500,
