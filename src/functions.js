@@ -25,6 +25,11 @@ function shorten(text, size) {
 	return text.length > size ? text.substring(0,size) + "..." : text;
 }
 
+function removeTags(text) {
+	text = text.replace(/\</g,"&lt;")   //for <
+	return text.replace(/\>/g,"&gt;")   //for >
+}
+
 //-----------------------------------------------
 // List Object
 //-----------------------------------------------
@@ -190,9 +195,31 @@ var List = function(target, settings) {
 			return this;
 		},
 		
+		// Reorders the model based on custom sort
+		reorder: function() {
+			var elements = $(this.el).children(".list-item");
+			var swap = null;
+			for(var i=0;i<this.items.length;i++) {
+				if(Number($(elements[i]).attr("data-index")) == i) {
+					continue;
+				} else {
+					if(swap) {
+						var temp = this.items[swap];
+						this.items[swap] = this.items[i];
+						this.items[i] = temp;
+						return this;
+					}
+					else {
+						swap = i;
+					}
+				}
+			}
+			return this;
+		},
+		
 		// Undo previous action
 		undo: function() {
-			// Do later
+			return this;
 		},
 	
 		// Renders the list into the target in settings
@@ -215,7 +242,7 @@ var List = function(target, settings) {
 					s += "<input type='checkbox' class='check'></input>";
 				}
 			
-				s += "</div><div class='item-text'>"+shorten(this.items[i].value)+"</div>";
+				s += "</div><div class='item-text'>"+removeTags(shorten(this.items[i].value))+"</div>";
 			
 				// Deal with days left
 				if(this.items[i].deadline && this.items[i].deadline != "") {
@@ -260,8 +287,9 @@ var List = function(target, settings) {
 // Item View Object
 //-----------------------------------------------
 
-var ItemView = function(selector, item) {
+var ItemView = function(selector, itemIndex) {
 	var el = $(selector);
+	var item = theList.items[itemIndex];
 	var functions = {
 		show: function() {
 			this.render();
@@ -270,6 +298,8 @@ var ItemView = function(selector, item) {
 			el.css({"height":"385px"});
 			el.animate({left:0});
 		},
+		
+		// Sets all values and hides the detail view
 		hide: function(scroll) {
 		
 			// Get all changed values
@@ -284,8 +314,17 @@ var ItemView = function(selector, item) {
 			el.animate({left:350}, function() {$(this).css({"height":"5px"});});
 			$("#list").css({"overflow-y":"auto", "max-height":"none"});
 			$("#main").scrollTop(scroll);
-			console.log(scroll);
 		}, 
+		
+		// Deletes item from list and closes list detail view
+		delete: function(scroll) {
+			
+			theList.deleteValue(itemIndex).save().render();
+		
+			el.animate({left:350}, function() {$(this).css({"height":"5px"});});
+			$("#list").css({"overflow-y":"auto", "max-height":"none"});
+			$("#main").scrollTop(scroll);
+		},
 		
 		// Draws all elements
 		render: function() {
@@ -293,9 +332,10 @@ var ItemView = function(selector, item) {
 			var s = "<div class='item-detail-title'>Item Details</div><hr>";
 			
 			s += "Value: <br><input type='text' class='item-value' placeholder='Enter value...'></input>";
-			s += "<br><br>Deadline: <input type='text' id='datepicker'><br><br>";
+			s += "<br><br>Deadline: <input type='text' id='datepicker' placeholder='None'><br><br>";
 			s += "Notes:<br><textarea class='item-notes'></textarea>";
 			s += "<br><br><button id='close-itemview'>Save and Return</button>";
+			s += "<button id='item-delete' class='danger-btn'>Delete</button>";
 			
 			el.html(s);
 			
@@ -303,7 +343,8 @@ var ItemView = function(selector, item) {
 			
 			setTimeout(function() {
 				$("#datepicker").datepicker();
-				$("#close-itemview").click(function() {ItemView("#itemview", item).hide(scroll);});
+				$("#close-itemview").click(function() {ItemView("#itemview", itemIndex).hide(scroll);});
+				$("#item-delete").click(function() {ItemView("#itemview", itemIndex).delete(scroll);});
 				
 				if(item.deadline) $("#datepicker").val(item.deadline); 
 				if(item.value || item.value === "false") $("#itemview .item-value").val(item.value);
@@ -327,20 +368,20 @@ $(document).on("keydown", "#cmd", function(event) {
 		var input = $("#cmd").val();
 		$("#cmd").val("");
 		
-		if(input == "cln") {
+		if(input == "/clean" || input == "/cln") {
 			theList.clean().save().render();
 		}
 		
-		else if(input == "sa") {
+		else if(input == "/sort alpha" || input == "/sa") {
 			theList.sort("alpha").save().render();
 		}
 		
-		else if(input == "sr") {
+		else if(input == "/sort remaining" || input == "/sr") {
 			theList.sort("remaining").save().render();
 		}
 		
 		// Fix thisss
-		else if(input == "sc") {
+		else if(input == "/sort checked" || input == "/sc") {
 			theList.sort("checked").save().render();
 		}
 		
@@ -402,7 +443,7 @@ $(document).on("dblclick", ".item-text", function(e) {
 
 // Opens up an item's details
 $(document).on("dblclick", ".list-item .days", function() {
-	ItemView("#itemview", theList.items[$(this).parent().attr("data-index")]).show();
+	ItemView("#itemview", Number($(this).parent().attr("data-index"))).show();
 });
 
 //-------------------------------------------------------
@@ -420,7 +461,7 @@ $(document).ready(function() {
 		delay: 500,
 		stop: function() {
 			theList.settings.sort = "custom";
-			theList.save();
+			theList.reorder().save();
 		}
 	});
 	

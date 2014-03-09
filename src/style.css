@@ -163,6 +163,10 @@ body {
 	font-family:Helvetica;
 }
 
+#itemview #item-delete {
+	float:right;
+}
+
 /*
  * General UI
  */
@@ -179,6 +183,10 @@ button {
 	border-radius: 5px;
 	padding: 5px 10px;
 	font-size: .9em;
+}
+
+.danger-btn {
+	background:rgb(255, 160, 160);
 }
 
 /*
