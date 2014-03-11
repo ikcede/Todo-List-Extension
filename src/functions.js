@@ -335,7 +335,7 @@ var ItemView = function(selector, itemIndex) {
 			s += "<br><br>Deadline: <input type='text' id='datepicker' placeholder='None'><br><br>";
 			s += "Notes:<br><textarea class='item-notes'></textarea>";
 			s += "<br><br><button id='close-itemview'>Save and Return</button>";
-			s += "<button id='item-delete' class='danger-btn'>Delete</button>";
+			s += "<button id='item-delete' class='red'>Delete</button>";
 			
 			el.html(s);
 			
@@ -425,7 +425,7 @@ $(document).on("dblclick", ".item-text", function(e) {
 			}
 			item.value = value;
 			
-			$(el).html(shorten(value));
+			$(el).html(removeTags(shorten(value)));
 			
 			theList.save();
 			setTimeout(function() {$("#control #cmd").focus();}, 50);
@@ -435,7 +435,7 @@ $(document).on("dblclick", ".item-text", function(e) {
 		
 	}).on("blur", function() {
 		// Reset if not entered		
-		$(el).html(item.value);
+		$(el).html(removeTags(shorten(item.value)));
 	});
 
 	return false;

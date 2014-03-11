@@ -118,16 +118,9 @@ body {
 	text-align:center;
 }
 
-.list-item .red {
-	background: rgb(255, 207, 207);
-}
-
-.list-item .green {
-	background:rgb(179, 255, 179);
-}
-
-.list-item .orange {
-	background:rgb(255, 222, 161);
+.days:hover {
+	outline:rgb(147, 147, 255) auto 4px;
+	outline-offset:-2px;
 }
 
 /*
@@ -185,8 +178,16 @@ button {
 	font-size: .9em;
 }
 
-.danger-btn {
-	background:rgb(255, 160, 160);
+.red {
+	background: rgb(255, 207, 207);
+}
+
+.green {
+	background:rgb(179, 255, 179);
+}
+
+.orange {
+	background:rgb(255, 222, 161);
 }
 
 /*
